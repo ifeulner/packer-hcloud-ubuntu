@@ -1,6 +1,6 @@
 variable "hcloud_token" {
   type    = string
-  default = "${env("HCLOUD_TOKEN")}"
+  default = env("HCLOUD_TOKEN")
 }
 
 source "hcloud" "ubuntu-snapshot" {
@@ -12,7 +12,7 @@ source "hcloud" "ubuntu-snapshot" {
   }
   snapshot_name = "ubuntu-snapshot"
   ssh_username  = "root"
-  token         = "${var.hcloud_token}"
+  token         = var.hcloud_token
 }
 
 build {

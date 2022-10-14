@@ -21,7 +21,7 @@ brew install packer
 export HCLOUD_TOKEN=<redacted>
 
 # for verbose logging
-# exoprt PACKER_LOG=1
+# export PACKER_LOG=1
 
 packer build hcloud-ubuntu-snapshot.pkr.hcl
 ```
