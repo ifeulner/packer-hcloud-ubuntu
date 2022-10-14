@@ -1,0 +1,31 @@
+---
+- name: First 5 minutes in new servers
+  hosts: localhost
+  vars:
+    ssh_desired_port: 2222
+  tasks:
+    - name: Update APT packages cache
+      apt: update_cache=yes
+    - name: Perform aptitude safe-upgrade
+      apt: upgrade=yes
+    - name: reconfigure sshd port to {{ ssh_desired_port }}
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        line: "Port {{ ssh_desired_port }}"
+
+- name: Hardening server to be compliant with the Inspec DevSec Baselines 
+  hosts: localhost
+  collections:
+    - devsec.hardening
+  roles:
+    - devsec.hardening.os_hardening
+    - devsec.hardening.ssh_hardening
+  vars:
+    sysctl_overwrite:
+      # Enable IPv4 traffic forwarding for docker / kubernetes usage
+      net.ipv4.ip_forward: 1
+    ssh_server_ports: [2222]
+    ssh_permit_root_login: without-password
+    ssh_print_debian_banner: true
+    sftp_enabled: true
+ 
